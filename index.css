@@ -1,0 +1,317 @@
+   Contact — a photo feed
+   Design concept: contact sheet / darkroom
+   ============================================ */
+
+:root{
+  --ink:        #16150f;
+  --paper:      #f2efe9;
+  --paper-dim:  #e5e0d5;
+  --amber:      #e8a33d;
+  --rust:       #b5482f;
+  --moss:       #7c8f6e;
+  --line:       #d8d2c2;
+  --text-soft:  #6b675c;
+
+  --font-display: "Fraunces", serif;
+  --font-mono:    "IBM Plex Mono", monospace;
+  --font-body:    "Work Sans", sans-serif;
+}
+
+*{ box-sizing:border-box; }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important; }
+}
+
+html,body{
+  margin:0;
+  background:var(--ink);
+  color:var(--ink);
+  font-family:var(--font-body);
+}
+
+/* ---------- sprocket rails (signature element) ---------- */
+.sprocket{
+  position:fixed;
+  top:0; bottom:0;
+  width:26px;
+  background:var(--ink);
+  background-image:radial-gradient(var(--paper-dim) 3.5px, transparent 3.6px);
+  background-size:26px 26px;
+  background-position:center 8px;
+  z-index:5;
+  display:none;
+}
+.sprocket-left{ left:0; }
+.sprocket-right{ right:0; }
+@media (min-width:900px){
+  .sprocket{ display:block; }
+}
+
+/* ---------- topbar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:10;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{
+  max-width:560px;
+  margin:0 auto;
+  padding:14px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.brand{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+}
+.brand-mark{
+  font-size:20px;
+  color:var(--rust);
+}
+.brand-name{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:22px;
+  letter-spacing:0.01em;
+}
+.brand-sub{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--text-soft);
+  letter-spacing:0.03em;
+}
+.topnav{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+/* ---------- icon buttons ---------- */
+.icon-btn{
+  border:none;
+  background:transparent;
+  width:34px; height:34px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  color:var(--ink);
+  transition:background 0.15s ease, transform 0.1s ease;
+}
+.icon-btn svg{
+  width:21px; height:21px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.7;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.icon-btn:hover{ background:var(--paper-dim); }
+.icon-btn:active{ transform:scale(0.92); }
+.icon-btn:focus-visible{
+  outline:2px solid var(--rust);
+  outline-offset:2px;
+}
+.icon-btn--liked{ color:var(--rust); }
+.icon-btn--ghost{ color:var(--text-soft); }
+.icon-btn--end{ margin-left:auto; }
+
+/* ---------- avatar ---------- */
+.avatar{
+  width:38px; height:38px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display);
+  font-weight:600;
+  color:var(--paper);
+  background:linear-gradient(150deg, var(--tone-a,#7c8f6e), var(--tone-b,#3f4a38));
+  flex-shrink:0;
+}
+.avatar--nav{ width:32px; height:32px; font-size:14px; margin-left:4px; }
+
+/* ---------- feed layout ---------- */
+.feed{
+  max-width:560px;
+  margin:0 auto;
+  padding:22px 18px 60px;
+}
+
+/* ---------- stories ---------- */
+.stories{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:16px 12px 14px;
+  margin-bottom:22px;
+}
+.stories-track{
+  list-style:none;
+  margin:0; padding:0;
+  display:flex;
+  gap:18px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.stories-track::-webkit-scrollbar{ display:none; }
+.story{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  flex-shrink:0;
+}
+.story-ring{
+  width:60px; height:60px;
+  border-radius:50%;
+  padding:3px;
+  background:linear-gradient(150deg, var(--tone-a,#c9c2ad), var(--tone-b,#c9c2ad));
+  display:flex; align-items:center; justify-content:center;
+}
+.story-ring--seen{
+  background:var(--line);
+}
+.story-ring--empty{
+  background:var(--paper-dim);
+  border:1.5px dashed var(--text-soft);
+}
+.story-thumb{
+  width:100%; height:100%;
+  border-radius:50%;
+  border:2px solid var(--paper);
+}
+.story-plus{
+  font-family:var(--font-mono);
+  font-size:20px;
+  color:var(--text-soft);
+}
+.story-label{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--text-soft);
+  max-width:64px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* ---------- post ---------- */
+.post{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:4px;
+  margin-bottom:26px;
+  overflow:hidden;
+}
+.post-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+}
+.post-who{
+  display:flex;
+  flex-direction:column;
+  line-height:1.25;
+}
+.post-user{
+  font-weight:600;
+  font-size:14px;
+}
+.post-loc{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--text-soft);
+}
+.frame-no{
+  margin-left:auto;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--rust);
+  letter-spacing:0.04em;
+}
+
+/* the photo frame, styled like a film negative frame */
+.post-frame{
+  position:relative;
+  background:var(--ink);
+  padding:10px 0;
+}
+.post-photo{
+  width:100%;
+  aspect-ratio:4/5;
+}
+.frame-tick{
+  position:absolute;
+  top:0; bottom:0;
+  width:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--paper-dim);
+  font-size:10px;
+  font-family:var(--font-mono);
+  opacity:0.5;
+}
+.frame-tick--l{ left:0; }
+.frame-tick--r{ right:0; }
+
+.post-actions{
+  display:flex;
+  align-items:center;
+  gap:2px;
+  padding:8px 10px 2px;
+}
+
+.post-body{
+  padding:6px 14px 16px;
+}
+.post-likes{
+  font-size:13.5px;
+  margin:6px 0 6px;
+}
+.post-caption{
+  font-size:14px;
+  line-height:1.45;
+  margin:0 0 6px;
+}
+.post-caption .post-user{
+  margin-right:6px;
+}
+.post-viewcomments{
+  display:block;
+  background:none;
+  border:none;
+  padding:0;
+  margin-bottom:6px;
+  font-family:var(--font-body);
+  font-size:13px;
+  color:var(--text-soft);
+  cursor:pointer;
+}
+.post-viewcomments:hover{ text-decoration:underline; }
+.post-time{
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  letter-spacing:0.04em;
+  color:var(--text-soft);
+  margin:0;
+}
+
+/* ---------- footer ---------- */
+.feed-footer{
+  text-align:center;
+  padding:30px 10px 10px;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:#8a8672;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:420px){
+  .feed{ padding:16px 10px 50px; }
+  .story-ring{ width:54px; height:54px; }
+}
